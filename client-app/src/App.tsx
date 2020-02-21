@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react';
+import axios from "axios";
+import {List} from "semantic-ui-react";
 
-const App: React.FC = () => (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo"/>
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-);
+interface Value {
+    readonly id: number;
+    readonly name: string;
+}
+
+const App: React.FC = () => {
+    const [values, setValues] = useState<Value[]>([]);
+
+    useEffect(() => {
+        axios.get<Value[]>("http://localhost:5000/api/values")
+            .then(res => setValues(res.data));
+    }, []);
+
+    return (
+        <div className="App">
+            <List>
+                {values.map(value => <List.Item key={value.id}>{value.name}</List.Item>)}
+            </List>
+        </div>
+    );
+};
 
 export default App;
