@@ -1,12 +1,10 @@
-using Application.Activities;
-using MediatR;
+using Application;
+using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Persistence;
 
 namespace API
 {
@@ -24,11 +22,9 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplication();
+            services.AddInfrastructure(Configuration);
             services.AddControllers();
-            services.AddDbContext<DataContext>(opt =>
-                opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddMediatR(typeof(List.Handler).Assembly);
 
             services.AddCors(opt =>
             {

@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Application.Common.Interfaces;
 using Domain;
 
-namespace Persistence
+namespace Infrastructure.Persistence
 {
-    public static class Seed
+    public static class ApplicationDbContextSeed
     {
-        public static void SeedData(DataContext context)
+        public static void SeedData(IApplicationDbContext context)
         {
             if (context.Activities.Any()) return;
 
@@ -106,7 +108,7 @@ namespace Persistence
             };
 
             context.Activities.AddRange(activities);
-            context.SaveChanges();
+            context.SaveChangesAsync(new CancellationToken());
         }
     }
 }
