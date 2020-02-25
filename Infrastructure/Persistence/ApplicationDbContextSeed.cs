@@ -2,18 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Domain;
+using Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Persistence
 {
     public static class ApplicationDbContextSeed
     {
-        public static void SeedData(IApplicationDbContext context)
+        public static async Task SeedData(IApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            if (context.Activities.Any()) return;
+            if (!userManager.Users.Any())
+            {
+                foreach (var user in Users())
+                    await userManager.CreateAsync(user, "Pa$$w0rd");
+            }
 
-            var activities = new List<Activity>
+            if (!context.Activities.Any())
+            {
+                context.Activities.AddRange(Activities());
+                await context.SaveChangesAsync(new CancellationToken());
+            }
+        }
+
+        private static IEnumerable<Activity> Activities()
+        {
+            return new List<Activity>
             {
                 new Activity
                 {
@@ -106,9 +122,31 @@ namespace Infrastructure.Persistence
                     Venue = "Cinema",
                 }
             };
+        }
 
-            context.Activities.AddRange(activities);
-            context.SaveChangesAsync(new CancellationToken());
+        private static IEnumerable<ApplicationUser> Users()
+        {
+            return new List<ApplicationUser>
+            {
+                new ApplicationUser
+                {
+                    DisplayName = "Bob",
+                    UserName = "bob",
+                    Email = "bob@test.com"
+                },
+                new ApplicationUser
+                {
+                    DisplayName = "Tom",
+                    UserName = "tom",
+                    Email = "tom@test.com"
+                },
+                new ApplicationUser
+                {
+                    DisplayName = "Jane",
+                    UserName = "jane",
+                    Email = "jane@test.com"
+                }
+            };
         }
     }
 }
