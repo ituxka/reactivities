@@ -17,7 +17,7 @@ namespace API.Common
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
@@ -36,10 +36,6 @@ namespace API.Common
 
             switch (exception)
             {
-                case ValidationException validationException:
-                    code = HttpStatusCode.BadRequest;
-                    result = JsonConvert.SerializeObject(validationException.Failures);
-                    break;
                 case NotFoundException _:
                     code = HttpStatusCode.NotFound;
                     break;
