@@ -1,7 +1,5 @@
+using API.Common.Extensions;
 using Application;
-using Application.Common.Interfaces;
-using API.Common;
-using FluentValidation.AspNetCore;
 using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,8 +25,8 @@ namespace API
         {
             services.AddApplication();
             services.AddInfrastructure(Configuration);
-            services.AddControllers()
-                .AddFluentValidation(fv => { fv.RegisterValidatorsFromAssemblyContaining<IApplicationDbContext>(); });
+
+            services.AddControllers();
 
             services.AddCors(opt =>
             {
