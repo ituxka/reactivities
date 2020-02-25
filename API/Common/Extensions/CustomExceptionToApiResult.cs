@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using API.Common.Models;
 using Application.Common.Exceptions;
 
 namespace API.Common.Extensions

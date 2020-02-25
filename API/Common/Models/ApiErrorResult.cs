@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text.Json;
 
-namespace API.Common
+namespace API.Common.Models
 {
     public class ApiErrorResult
     {
