@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Domain;
-using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Persistence
